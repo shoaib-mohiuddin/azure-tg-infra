@@ -34,6 +34,7 @@ inputs = {
   subnet_name = "VmSubnet"
   tags = {
     environment = "dev"
+    foo = "bar"
   }
 }
 
