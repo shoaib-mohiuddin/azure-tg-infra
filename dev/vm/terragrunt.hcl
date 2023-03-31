@@ -3,7 +3,7 @@ include {
 }
 
 terraform {
-  source = "git::https://github.com/shoaib-mohiuddin/azure-mod-network"
+  source = "git::https://github.com/shoaib-mohiuddin/azure-mod-compute"
 
   before_hook "echo_module" {
     commands = get_terraform_commands_that_need_locking()
@@ -25,13 +25,19 @@ terraform {
   }
 }
 
+dependency "networking" {
+  config_path = "../network"
+}
+
+dependencies {
+  paths = ["../network"]
+}
+
 inputs = {
-  vnet_resource_group_name = "network-rg"
-  location = "West Europe"
-  address_space = ["10.0.0.0/16"]
-  subnet_address_prefixes = ["10.0.0.0/23"]
-  virtual_network_name = "main-vnet"
-  subnet_name = "VmSubnet"
+  location     = "West Europe"
+  rg_name      = "webserver-rg"
+  vm_name      = "webserver"
+  vm_subnet_id = dependency.networking.outputs.vm_subnet_id.id
   tags = {
     environment = "dev"
     foo = "bar"

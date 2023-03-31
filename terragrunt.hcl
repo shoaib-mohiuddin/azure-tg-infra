@@ -20,7 +20,7 @@ remote_state {
   config = {
     resource_group_name  = "tfstate-rg"
     storage_account_name = "tfstate7fax4"
-    container_name       = get_env("GIT_REPO_NAME", basename(get_parent_terragrunt_dir()))   # blob-tfstate7fax4
+    container_name       = "blob-tfstate7fax4"   # blob-tfstate7fax4 ; get_env("GIT_REPO_NAME", basename(get_parent_terragrunt_dir()))
     key                  = "${path_relative_to_include()}/terraform.tfstate"
   }
 }
