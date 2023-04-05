@@ -2,6 +2,11 @@ include {
   path = find_in_parent_folders()
 }
 
+locals {
+  locals_vars = read_terragrunt_config(find_in_parent_folders("locals.hcl"))
+  common      = local.locals_vars.locals
+}
+
 terraform {
   source = "git::https://github.com/shoaib-mohiuddin/azure-mod-network"
 
@@ -26,14 +31,14 @@ terraform {
 }
 
 inputs = {
-  vnet_resource_group_name = "network-rg"
-  location = "West Europe"
-  address_space = ["10.0.0.0/16"]
-  subnet_address_prefixes = ["10.0.0.0/23"]
-  virtual_network_name = "main-vnet"
-  subnet_name = "VmSubnet"
+  vnet_resource_group_name = "network-rg-${local.common.env}"
+  location                 = "westeurope"
+  address_space            = ["10.0.0.0/16"]
+  subnet_address_prefixes  = ["10.0.0.0/23"]
+  virtual_network_name     = "main-vnet-${local.common.env}"
+  subnet_name              = "VmSubnet"
   tags = {
-    environment = "dev"
+    environment = "${local.common.env}"
     foo = "bar"
   }
 }

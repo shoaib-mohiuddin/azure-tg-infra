@@ -2,6 +2,11 @@ include {
   path = find_in_parent_folders()
 }
 
+locals {
+  locals_vars = read_terragrunt_config(find_in_parent_folders("locals.hcl"))
+  common      = local.locals_vars.locals
+}
+
 terraform {
   source = "git::https://github.com/shoaib-mohiuddin/azure-mod-compute"
 
@@ -34,13 +39,13 @@ dependencies {
 }
 
 inputs = {
-  location     = "West Europe"
-  rg_name      = "webserver-rg"
-  vm_name      = "webserver"
+  location     = "westeurope"
+  rg_name      = "webserver-rg-${local.common.env}"
+  vm_name      = "webserver-${local.common.env}"
   vm_size      = "Standard_DS1_v2"
   vm_subnet_id = dependency.networking.outputs.vm_subnet_id
   tags = {
-    environment = "dev"
+    environment = "${local.common.env}"
     foo = "bar"
   }
 }
