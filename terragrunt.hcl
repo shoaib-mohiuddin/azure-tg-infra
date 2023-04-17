@@ -2,7 +2,7 @@
 # each configuration. Base provider, one for each level so a different key for each
 #
 # generated files
-#    core.tf               Backend config
+#    backend.tf            Backend config
 #    versions_override.tf  Terraform version, required providers
 #    providers.tf          base provider blocks
 
@@ -14,7 +14,7 @@ remote_state {
   backend                         = "azurerm"
   disable_dependency_optimization = true
   generate = {
-    path      = "core-generated.tf"
+    path      = "backend.tf"
     if_exists = "overwrite_terragrunt"
   }
   config = {
