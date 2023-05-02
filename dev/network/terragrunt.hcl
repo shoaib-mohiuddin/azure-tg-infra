@@ -34,9 +34,17 @@ inputs = {
   vnet_resource_group_name = "network-rg-${local.common.env}"
   location                 = "westeurope"
   address_space            = ["10.0.0.0/16"]
-  subnet_address_prefixes  = ["10.0.0.0/23"]
   virtual_network_name     = "main-vnet-${local.common.env}"
-  subnet_name              = "VmSubnet"
+  subnets = [
+    {
+      name             = "VmSubnet"
+      address_prefixes = ["10.0.1.0/24"]
+    },
+    {
+      name             = "AKSSubnet"
+      address_prefixes = ["10.0.2.0/24"]
+    }
+  ]
   tags = {
     environment = "${local.common.env}"
     foo = "bar"
